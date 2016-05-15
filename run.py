@@ -12,20 +12,22 @@ def run(start_date, end_date, dest=None):
             'http://www.w3.org/2005/Atom': None,
             'http://www.fpdsng.com/FPDS': None
         }
-        results = []
+        fp.write('[')
 
         while g.next is not None:
             for entry in g.entries:
                 d = ET.tostring(entry, encoding="unicode")
-                results.append(xmltodict.parse(d, process_namespaces=True, namespaces=ns))
+                fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
+                fp.write(',')
             g = GetFPDS(start_date=start_date, end_date=end_date, start=g.next)
 
         # Last time
         for entry in g.entries:
             d = ET.tostring(entry, encoding="unicode")
-            results.append(xmltodict.parse(d, process_namespaces=True, namespaces=ns))
+            fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
+            fp.write(']')
 
-        fp.write(json.dumps(results))
+        # fp.write(json.dumps(results))
 
 if __name__ == "__main__":
     import argparse
