@@ -16,9 +16,11 @@ pip install -r requirements.txt
 
 To download a day of FPDS data, simply run:
 
-`python run.py <start_date>`
+`python run.py <start_date> [-f <filename>]`
 
-where the start_date is formatted in the form "YYYY/MM/DD". The data will be saved in the `results` folder.
+where the start_date is formatted in the form "YYYY/MM/DD".
+
+If no filename option is used, the data will be saved in the `results` folder.
 
 ## Public domain
 
