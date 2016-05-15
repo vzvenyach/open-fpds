@@ -5,3 +5,4 @@ requests==2.10.0
 six==1.10.0
 vcrpy==1.7.4
 wrapt==1.10.8
+xmltodict==0.10.1

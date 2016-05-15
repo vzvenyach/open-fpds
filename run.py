@@ -23,7 +23,7 @@ def run(start_date, end_date):
             d = ET.tostring(entry, encoding="unicode")
             results.append(xmltodict.parse(d, process_namespaces=True, namespaces=ns))
 
-        fp.write(json.dumps(results, indent=2))
+        fp.write(json.dumps(results))
 
 if __name__ == "__main__":
     import argparse
