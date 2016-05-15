@@ -17,6 +17,7 @@ class GetFPDS:
         }
         data = self.parse(self.get(base_url + date_string + "&start=" + str(start)).text)
         self.next = next(data.find('./feed:link[@rel="next"]', ns))
+        self.last = parse_qs(data.find('./feed:link[@rel="last"]', ns).attrib["href"])["start"][0]
         self.entries = data.findall('.//feed:entry', ns)
 
     def get(self, url):

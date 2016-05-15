@@ -27,7 +27,6 @@ def run(start_date, end_date, dest=None):
             fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
             fp.write(']')
 
-        # fp.write(json.dumps(results))
 
 if __name__ == "__main__":
     import argparse
