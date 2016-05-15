@@ -4,36 +4,36 @@ import xmltodict
 import json
 
 
-def run(start_date, end_date, dest=None):
+def run(start_date, end_date, dest=None, agency=None):
     dest = dest or 'results/' + start_date.replace('/', '-') + '.json'
     with open(dest, 'w') as fp:
-        g = GetFPDS(start_date=start_date, end_date=end_date, start=0)
+        g = GetFPDS(start_date=start_date, end_date=end_date, agency=agency, start=0)
         ns = {
             'http://www.w3.org/2005/Atom': None,
             'http://www.fpdsng.com/FPDS': None
         }
-        fp.write('[')
+        results = []
 
         while g.next is not None:
             for entry in g.entries:
                 d = ET.tostring(entry, encoding="unicode")
-                fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
-                fp.write(',')
-            g = GetFPDS(start_date=start_date, end_date=end_date, start=g.next)
+                results.append(xmltodict.parse(d, process_namespaces=True, namespaces=ns))
+            g = GetFPDS(start_date=start_date, end_date=end_date, agency=agency, start=g.next)
 
         # Last time
         for entry in g.entries:
             d = ET.tostring(entry, encoding="unicode")
-            fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
-            fp.write(',')
+            results.append(xmltodict.parse(d, process_namespaces=True, namespaces=ns))
 
-        fp.write(']')
+        fp.write(json.dumps(results))
 
 
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='Run FPDS getter')
     parser.add_argument('start_date', help='the start date in the format "YYYY/MM/DD"')
+    parser.add_argument('end_date', help='the end date in the format "YYYY/MM/DD"')
+    parser.add_argument('-a', '--agency', help='the agency name')
     parser.add_argument('-f', '--file', help='the location of the file')
     args = parser.parse_args()
-    run(args.start_date, args.start_date, args.file)
+    run(args.start_date, args.end_date, args.file, args.agency)
