@@ -1,12 +1,13 @@
 import requests
 import xml.etree.ElementTree as ET
+from urllib.parse import parse_qs
 
 
 class GetFPDS:
     def __init__(self, start_date="2016/05/09", end_date="2016/05/13", start=0):
 
         def next(elem):
-            return None if elem is None else elem.attrib["href"]
+            return None if elem is None else parse_qs(elem.attrib["href"])["start"][0]
 
         base_url = "https://www.fpds.gov/dbsight/FEEDS/ATOM?FEEDNAME=PUBLIC&q=LAST_MOD_DATE:"
         date_string = "[" + start_date + ", " + end_date + "]"
