@@ -3,8 +3,10 @@ import xml.etree.ElementTree as ET
 import xmltodict
 import json
 
-def run(start_date, end_date):
-    with open('results/' + start_date.replace('/','-') + '.json', 'w') as fp:
+
+def run(start_date, end_date, dest=None):
+    dest = dest or 'results/' + start_date.replace('/', '-') + '.json'
+    with open(dest, 'w') as fp:
         g = GetFPDS(start_date=start_date, end_date=end_date, start=0)
         ns = {
             'http://www.w3.org/2005/Atom': None,
@@ -29,6 +31,6 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='Run FPDS getter')
     parser.add_argument('start_date', help='the start date in the format "YYYY/MM/DD"')
-    #parser.add_argument('end_date', help='the end date in the format "YYYY/MM/DD"')
+    parser.add_argument('-f', '--file', help='the location of the file')
     args = parser.parse_args()
-    run(args.start_date, args.start_date)
+    run(args.start_date, args.start_date, args.file)
