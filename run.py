@@ -25,7 +25,9 @@ def run(start_date, end_date, dest=None):
         for entry in g.entries:
             d = ET.tostring(entry, encoding="unicode")
             fp.write(json.dumps(xmltodict.parse(d, process_namespaces=True, namespaces=ns)))
-            fp.write(']')
+            fp.write(',')
+
+        fp.write(']')
 
 
 if __name__ == "__main__":
